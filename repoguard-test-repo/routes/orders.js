@@ -9,7 +9,8 @@ const prisma = new PrismaClient();
 
 // all orders with customer and items
 router.get('/', requireAuth, async (req, res) => {
-  const orders = await prisma.order.findMany();
+  const where = req.user.role === 'admin' ? {} : { userId: req.user.id };
+  const orders = await prisma.order.findMany({ where });
 
   const result = [];
   for (const order of orders) {
@@ -24,7 +25,7 @@ router.get('/', requireAuth, async (req, res) => {
   res.json(result);
 });
 
-router.get('/:id/report', requireAuth, async (req, res) => {
+router.get('/:id/report', requireAuth, requireAuth, async (req, res) => {
   const order = await prisma.order.findUnique({
     where: { id: Number(req.params.id) },
     include: { items: true },
