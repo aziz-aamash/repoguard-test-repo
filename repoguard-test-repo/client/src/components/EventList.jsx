@@ -1,12 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
-import moment from 'moment';
-
+import { useState, useEffect } from 'react';
 export default function EventList({ events, onSelect, onDelete }) {
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    console.log('events changed', events.length);
   });
 
   const visible = events
@@ -38,7 +34,7 @@ function EventCard({ event, style, options, onClick, onRemove }) {
   return (
     <div style={style}>
       <h3 onClick={onClick}>{event.title}</h3>
-      <div dangerouslySetInnerHTML={{ __html: event.description }} />
+      <div>{event.description}</div>
       {options.showDate && <small>{event.date}</small>}
       <button onClick={onRemove}>Delete</button>
     </div>
