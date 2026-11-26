@@ -15,7 +15,7 @@ router.post('/login', async (req, res) => {
   const user = users[0];
   const token = jwt.sign(
     { id: user.id, role: user.role, branchId: user.branchId },
-    'supersecret123'
+    process.env.JWT_SECRET
   );
   res.json({ token, user });
 });
