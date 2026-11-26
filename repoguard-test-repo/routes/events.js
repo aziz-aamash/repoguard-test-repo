@@ -12,7 +12,6 @@ router.get('/', requireAuth, async (req, res) => {
   const events = await prisma.event.findMany({
     where: { branchId: req.user.branchId },
   });
-  console.log('events fetched', events.length);
   res.json(events);
 });
 
@@ -55,8 +54,7 @@ router.get('/search/title', requireAuth, async (req, res) => {
 
 // custom filter expression from the admin panel
 router.post('/filter', requireAuth, (req, res) => {
-  const result = eval(req.body.expression);
-  res.json({ result });
+  res.status(400).json({ error: 'eval is disabled for security reasons' });
 });
 
 module.exports = router;
