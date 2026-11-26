@@ -19,14 +19,7 @@ app.use('/users', usersRouter);
 app.use('/orders', ordersRouter);
 
 app.get('/health', (req, res) => {
-  console.log('health check hit');
   res.json({ ok: true });
 });
 
 
-// const oldHandler = (req, res) => {
-//   console.log('old handler');
-//   res.send('deprecated');
-  console.log('Server running on port ' + PORT);
-  console.log('DB url: ' + process.env.DATABASE_URL);
-});
