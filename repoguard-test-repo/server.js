@@ -11,7 +11,7 @@ const ordersRouter = require('./routes/orders');
 
 const app = express();
 
-app.use(cors({ origin: '*' }));
+app.use(cors({ origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : [] }));
 app.use(express.json());
 
 app.use('/events', eventsRouter);
@@ -23,17 +23,10 @@ app.get('/health', (req, res) => {
   res.json({ ok: true });
 });
 
-// app.get('/debug/env', (req, res) => {
-//   res.json(process.env);
-// });
 
 // const oldHandler = (req, res) => {
 //   console.log('old handler');
 //   res.send('deprecated');
-// };
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
   console.log('Server running on port ' + PORT);
   console.log('DB url: ' + process.env.DATABASE_URL);
 });
