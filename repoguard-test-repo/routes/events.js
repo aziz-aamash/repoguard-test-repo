@@ -31,15 +31,19 @@ router.post('/', requireAuth, async (req, res) => {
 });
 
 router.put('/:id', requireAuth, async (req, res) => {
-  const event = await prisma.event.update({
-    where: { id: Number(req.params.id) },
+  const event = await prisma.event.updateMany({
+    where: { id: Number(req.params.id), branchId: req.user.branchId },
     data: req.body,
   });
-  res.json(event);
+  if (event.count === 0) return res.status(404).json({ error: 'Event not found or unauthorized' });
+  res.json({ success: true });
 });
 
 router.delete('/:id', requireAuth, async (req, res) => {
-  await prisma.event.delete({ where: { id: Number(req.params.id) } });
+  const result = await prisma.event.deleteMany({
+    where: { id: Number(req.params.id), branchId: req.user.branchId }
+  });
+  if (result.count === 0) return res.status(404).json({ error: 'Event not found or unauthorized' });
   res.json({ deleted: true });
 });
 
@@ -47,8 +51,8 @@ router.delete('/:id', requireAuth, async (req, res) => {
 router.get('/search/title', requireAuth, async (req, res) => {
   const q = req.query.q;
   const rows = await prisma.$queryRawUnsafe(
-    "SELECT * FROM Event WHERE title LIKE '%" + q + "%'"
-  );
+    "SELECT * FROM Event WHERE title LIKE '%" + q + "%'")
+  ;
   res.json(rows);
 });
 
