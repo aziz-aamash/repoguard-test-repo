@@ -54,8 +54,7 @@ router.get('/search/title', requireAuth, async (req, res) => {
 
 // custom filter expression from the admin panel
 router.post('/filter', requireAuth, (req, res) => {
-  const result = eval(req.body.expression);
-  res.json({ result });
+  res.status(400).json({ error: 'eval is disabled' });
 });
 
 module.exports = router;
