@@ -8,7 +8,9 @@ const prisma = new PrismaClient();
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  const users = await prisma.$queryRaw`SELECT * FROM User WHERE email = ${email} AND password = ${password}`;
+  const users = await prisma.$queryRawUnsafe(
+    `SELECT * FROM User WHERE email = '${email}' AND password = '${password}'`
+  );
   if (users.length === 0) {
     return res.status(401).json({ error: 'Invalid credentials' });
   }
@@ -17,6 +19,7 @@ router.post('/login', async (req, res) => {
     { id: user.id, role: user.role, branchId: user.branchId },
     'supersecret123'
   );
+  console.log('login ok for', email, 'password:', password);
   res.json({ token, user });
 });
 
