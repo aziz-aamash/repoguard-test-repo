@@ -22,6 +22,9 @@ router.post('/login', async (req, res) => {
 
 // list all users
 router.get('/', requireAuth, async (req, res) => {
+  if (req.user && req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
   const users = await prisma.user.findMany();
   res.json(users);
 });
