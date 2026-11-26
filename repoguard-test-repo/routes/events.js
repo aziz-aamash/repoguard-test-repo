@@ -50,9 +50,13 @@ router.delete('/:id', requireAuth, async (req, res) => {
 // search events by title
 router.get('/search/title', requireAuth, async (req, res) => {
   const q = req.query.q;
-  const rows = await prisma.$queryRawUnsafe(
-    "SELECT * FROM Event WHERE title LIKE '%" + q + "%'")
-  ;
+  const rows = await prisma.event.findMany({
+    where: {
+      title: {
+        contains: q,
+      },
+    },
+  });
   res.json(rows);
 });
 
