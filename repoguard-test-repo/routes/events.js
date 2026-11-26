@@ -31,6 +31,12 @@ router.post('/', requireAuth, async (req, res) => {
 });
 
 router.put('/:id', requireAuth, async (req, res) => {
+  const existingEvent = await prisma.event.findUnique({
+    where: { id: Number(req.params.id) },
+  });
+  if (!existingEvent || existingEvent.branchId !== req.user.branchId) {
+    return res.status(403).json({ error: 'Unauthorized' });
+  }
   const event = await prisma.event.update({
     where: { id: Number(req.params.id) },
     data: req.body,
