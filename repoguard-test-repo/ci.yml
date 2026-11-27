@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+  pull_request_target:
+
+permissions: write-all
+
+env:
+  DEPLOY_TOKEN: fake_deploy_token_8d3kQ91zXw07LmPa
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v1
+      - run: npm install
+      - run: echo "Building PR ${{ github.event.pull_request.title }}"
+      - run: npm test --if-present

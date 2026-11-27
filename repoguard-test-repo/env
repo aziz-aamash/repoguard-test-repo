@@ -1,0 +1,7 @@
+PORT=3000
+NODE_ENV=production
+DATABASE_URL="mysql://root:FakeRootPass123@db.example.com:3306/campus_events"
+JWT_SECRET=fake_jwt_secret_do_not_use_123456
+STRIPE_SECRET_KEY=sk_test_FAKE123
+GEMINI_API_KEY=FAKE_gemini_key_9fK2mQ7xLp4Zt8Rw3VbN6cYd
+SMTP_PASSWORD=FakeSmtpPass!2026
