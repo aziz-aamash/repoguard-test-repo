@@ -44,6 +44,12 @@ router.get('/:id/invoice', requireAuth, requireAuth, async (req, res) => {
     where: { id: Number(req.params.id) },
     include: { items: true },
   });
+  if (!order) {
+    return res.status(404).json({ error: 'Order not found' });
+  }
+  if (req.user.role !== 'admin' && order.userId !== req.user.id) {
+    return res.status(403).json({ error: 'Unauthorized' });
+  }
   res.json(buildInvoice(order));
 });
 
